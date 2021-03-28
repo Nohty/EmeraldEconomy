@@ -1,0 +1,14 @@
+error-messages:
+  deposit:
+    no-amount-specified: "&cYou need to specify a amount you want to deposit!"
+    no-items: "&cYou don't have enough cash in your hand!"
+  withdraw:
+    no-amount-specified: "&cYou need to specify a amount you want to withdraw!"
+    full-inventory: "&cYour inventory is full!"
+    no-money: "&cYou don't have enough money!"
+  no-permission: "&cYou can't use this command!"
+
+money:
+  name: Cash
+  symbol: $
+  secret-word: legit
