@@ -79,8 +79,8 @@ public class Emerald implements CommandExecutor {
       return;
     }
     if (!checkBalance(player, amount)) {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-          plugin.getConfig().getString("error-messages.withdraw.no-money")));
+      player.sendMessage(
+          ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("error-messages.withdraw.no-mone")));
       return;
     }
     if (withdrawFromPlayer(player, amount)) {
@@ -144,6 +144,14 @@ public class Emerald implements CommandExecutor {
 
   private boolean depositToPlayer(Player player, int amount) {
     return (plugin.eco.depositPlayer(player, amount).type == ResponseType.SUCCESS);
+  }
+
+  private String getConfigString(String name) {
+    try {
+      return plugin.getConfig().getString(name);
+    } catch (IllegalArgumentException e) {
+      return null;
+    }
   }
 
   private ItemStack getItem(int amount) {
