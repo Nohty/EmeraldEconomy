@@ -5,8 +5,8 @@ version: 1.0.0
 api-version: 1.16
 commands:
   EmeraldEconomy:
-    aliases: ee
+    aliases: [ee]
   Withdraw:
-    aliases: with
+    aliases: [with]
   Deposit:
-    aliases: dep
+    aliases: [dep]
