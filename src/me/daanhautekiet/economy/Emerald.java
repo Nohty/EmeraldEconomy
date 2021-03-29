@@ -40,24 +40,24 @@ public class Emerald implements CommandExecutor {
         return true;
       } else if (label.equalsIgnoreCase("deposit") || label.equalsIgnoreCase("dep")) {
         if (args.length == 0) {
-          player.sendMessage(getConfigString(sender, "error-messages.deposit.no-amount-specified"));
+          player.sendMessage(getConfigData(sender, "error-messages.deposit.no-amount-specified"));
           return true;
         }
         try {
           deposit(player, Integer.parseInt(args[0]));
         } catch (NumberFormatException e) {
-          player.sendMessage(getConfigString(sender, "error-messages.deposit.no-amount-specified"));
+          player.sendMessage(getConfigData(sender, "error-messages.deposit.no-amount-specified"));
         }
         return true;
       } else if (label.equalsIgnoreCase("withdraw") || label.equalsIgnoreCase("with")) {
         if (args.length == 0) {
-          player.sendMessage(getConfigString(sender, "error-messages.withdraw.no-amount-specified"));
+          player.sendMessage(getConfigData(sender, "error-messages.withdraw.no-amount-specified"));
           return true;
         }
         try {
           withdraw(player, Integer.parseInt(args[0]));
         } catch (NumberFormatException e) {
-          player.sendMessage(getConfigString(sender, "error-messages.withdraw.no-amount-specified"));
+          player.sendMessage(getConfigData(sender, "error-messages.withdraw.no-amount-specified"));
         }
         return true;
       }
@@ -69,31 +69,31 @@ public class Emerald implements CommandExecutor {
 
   private void withdraw(Player player, int amount) {
     if (!(player.hasPermission("emeraldeconomy.withdraw"))) {
-      player.sendMessage(getConfigString(player, "error-messages.no-permission"));
+      player.sendMessage(getConfigData(player, "error-messages.no-permission"));
       return;
     }
     if (player.getInventory().firstEmpty() == -1) {
-      player.sendMessage(getConfigString(player, "error-messages.withdraw.full-inventory"));
+      player.sendMessage(getConfigData(player, "error-messages.withdraw.full-inventory"));
       return;
     }
     if (!checkBalance(player, amount)) {
-      player.sendMessage(getConfigString(player, "error-messages.withdraw.no-money"));
+      player.sendMessage(getConfigData(player, "error-messages.withdraw.no-money"));
       return;
     }
     if (withdrawFromPlayer(player, amount)) {
       player.getInventory().addItem(getItem(player, amount));
       player.sendMessage(
-          ChatColor.GOLD + "You have withdrawn " + getConfigString(player, "money.symbol") + Integer.toString(amount));
+          ChatColor.GOLD + "You have withdrawn " + getConfigData(player, "money.symbol") + Integer.toString(amount));
     }
   }
 
   private void deposit(Player player, int amount) {
     if (!(player.hasPermission("emeraldeconomy.deposit"))) {
-      player.sendMessage(getConfigString(player, "error-messages.no-permission"));
+      player.sendMessage(getConfigData(player, "error-messages.no-permission"));
       return;
     }
     if (!checkItem(player, amount)) {
-      player.sendMessage(getConfigString(player, "error-messages.deposit.no-items"));
+      player.sendMessage(getConfigData(player, "error-messages.deposit.no-items"));
       return;
     }
     if (amount > 64)
@@ -102,13 +102,13 @@ public class Emerald implements CommandExecutor {
       player.getInventory().getItemInMainHand()
           .setAmount(player.getInventory().getItemInMainHand().getAmount() - amount);
       player.sendMessage(
-          ChatColor.GOLD + "You have deposit " + getConfigString(player, "money.symbol") + Integer.toString(amount));
+          ChatColor.GOLD + "You have deposit " + getConfigData(player, "money.symbol") + Integer.toString(amount));
     }
   }
 
   private void reloadConfig(Player player) {
     if (!(player.hasPermission("emeraldeconomy.reload"))) {
-      player.sendMessage(getConfigString(player, "error-messages.no-permission"));
+      player.sendMessage(getConfigData(player, "error-messages.no-permission"));
       return;
     }
     plugin.reloadConfig();
@@ -123,7 +123,7 @@ public class Emerald implements CommandExecutor {
     if (player.getInventory().getItemInMainHand().getType().equals(Material.EMERALD))
       if (player.getInventory().getItemInMainHand().getItemMeta().hasLore())
         if (player.getInventory().getItemInMainHand().getItemMeta().getLore().get(1)
-            .equals(ChatColor.BLUE + "" + ChatColor.MAGIC + getConfigString(player, "money.secret-word"))) {
+            .equals(ChatColor.BLUE + "" + ChatColor.MAGIC + getConfigData(player, "money.secret-word"))) {
           if (amount > 64) {
             amount = 64;
           }
@@ -140,7 +140,7 @@ public class Emerald implements CommandExecutor {
     return (plugin.eco.depositPlayer(player, amount).type == ResponseType.SUCCESS);
   }
 
-  private String getConfigString(CommandSender sender, String name) {
+  private String getConfigData(CommandSender sender, String name) {
     try {
       return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(name));
     } catch (IllegalArgumentException e) {
@@ -153,10 +153,10 @@ public class Emerald implements CommandExecutor {
   private ItemStack getItem(Player player, int amount) {
     ItemStack money = new ItemStack(Material.EMERALD, amount);
     ItemMeta meta = money.getItemMeta();
-    meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + getConfigString(player, "money.name"));
+    meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + getConfigData(player, "money.name"));
     List<String> lore = new ArrayList<String>();
     lore.add("");
-    lore.add(ChatColor.BLUE + "" + ChatColor.MAGIC + getConfigString(player, "money.secret-word"));
+    lore.add(ChatColor.BLUE + "" + ChatColor.MAGIC + getConfigData(player, "money.secret-word"));
     meta.setLore(lore);
     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
     meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
