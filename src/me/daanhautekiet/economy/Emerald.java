@@ -143,11 +143,13 @@ public class Emerald implements CommandExecutor {
     return (plugin.eco.depositPlayer(player, amount).type == ResponseType.SUCCESS);
   }
 
-  private String getConfigString(String name) {
+  private String getConfigString(String name, CommandSender sender) {
     try {
-      return plugin.getConfig().getString(name);
+      return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(name));
     } catch (IllegalArgumentException e) {
-      return "";
+      sender.sendMessage(ChatColor.RED
+          + "The file /plugins/EmeraldEconomy/config.yml is broken. If you don't see the problem remove the file and restart your server.");
+      throw new IllegalArgumentException("Can't find " + name + " in the config.");
     }
   }
 
