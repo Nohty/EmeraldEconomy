@@ -12,3 +12,4 @@ money:
   name: Cash
   symbol: $
   secret-word: legit
+  ratio: 1
